@@ -7,21 +7,38 @@ const db = knex({
   // Database information
   client: "pg",
   connection: {
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false, // not secure for production, just for local development without users
-    },
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
   },
 });
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://smart-brain-b0cs.onrender.com",
+  })
+);
 app.use(express.json());
+
+//Fix CORS error, allow Render frontend to connect to fly.io backend
+app.all("/", function (req, res, next) {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://smart-brain-b0cs.onrender.com"
+  );
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  console.log("USER API CALLED");
+  next();
+});
 
 // Test only - when you have a database variable you want to use
 // app.get('/', (req, res)=> {
 //   res.send(database.users);
+// res.send("it is working");
 // })
 
 app.post("/signin", (req, res) => {
@@ -101,6 +118,6 @@ app.put("/image", (req, res) => {
     .catch((err) => res.status(400).json("unable to get entries"));
 });
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 3000, "0.0.0.0", () => {
   console.log(`app is running on port ${process.env.PORT}`);
 });
