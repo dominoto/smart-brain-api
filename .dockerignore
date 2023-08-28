@@ -17,6 +17,9 @@
 .env.test.local
 .env.production.local
 *.code-workspace
+.env
+.git
+.cache
 
 npm-debug.log*
 yarn-debug.log*

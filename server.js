@@ -19,21 +19,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://smart-brain-b0cs.onrender.com",
+    origin: process.env.ORIGIN,
   })
 );
-app.use(express.json());
 
-//Fix CORS error, allow Render frontend to connect to fly.io backend
-app.all("/", function (req, res, next) {
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://smart-brain-b0cs.onrender.com"
-  );
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  console.log("USER API CALLED");
-  next();
-});
+app.use(express.json());
 
 // Test only - when you have a database variable you want to use
 // app.get('/', (req, res)=> {
@@ -118,6 +108,6 @@ app.put("/image", (req, res) => {
     .catch((err) => res.status(400).json("unable to get entries"));
 });
 
-app.listen(process.env.PORT || 3000, "0.0.0.0", () => {
+app.listen(process.env.PORT, "0.0.0.0", () => {
   console.log(`app is running on port ${process.env.PORT}`);
 });
