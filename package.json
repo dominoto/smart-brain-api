@@ -4,7 +4,7 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "start": "node server_local.js",
+    "start": "node server.js",
     "start:dev": "nodemon -r dotenv/config server.js",
     "start_local": "node -r dotenv/config server.js"
   },
