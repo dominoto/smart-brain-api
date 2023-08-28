@@ -97,10 +97,10 @@ app.get("/profile/:id", (req, res) => {
 });
 
 app.put("/image", (req, res) => {
-  const { id } = req.body;
+  const { id, faceCount } = req.body;
   db("users")
     .where("id", "=", id)
-    .increment("entries", 1)
+    .increment("entries", faceCount)
     .returning("entries")
     .then((entries) => {
       res.json(entries[0].entries);
